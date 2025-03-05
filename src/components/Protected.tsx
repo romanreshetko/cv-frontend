@@ -8,15 +8,12 @@ interface ProtectedProps {
 const Protected: React.FC<ProtectedProps> = ({children}) => {
 
     const token = localStorage.getItem("token");
-    console.log(token)
     const isTokenValid = token && !isTokenExpired(token);
     const navigate = useNavigate();
 
     if (isTokenValid) {
-        console.log('valid')
         return children
     } else {
-        console.log('not valid')
         navigate('/log-in')
         return null
     }
