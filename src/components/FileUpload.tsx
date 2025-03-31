@@ -44,6 +44,29 @@ const FileUpload = () => {
             if (response.ok) {
                 setSuccessMessage("File is validated! Please, wait while cv is generating.");
                 setUploading(!uploading);
+
+                
+                const generateResponse = await fetch('http://localhost:3000/generate', {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (generateResponse.ok) {
+                    const blob = await generateResponse.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "resume.zip";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+
+                    setSuccessMessage("Resume generated and downloaded.");
+                } else {
+                    setSuccessMessage("");
+                    setErrorMessage("Failed to generate resume.");
+                }
             } else {
                 setErrorMessage(data.message || "Unknown error");
             }
