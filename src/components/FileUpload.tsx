@@ -76,6 +76,28 @@ const FileUpload = () => {
         }
     }
 
+    const handleDownloadExample = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/example');
+
+            if (!response.ok) {
+                throw new Error('Failed to download file');
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'example.yaml';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            alert("Failed to download example file.");
+        }
+    }
+
 
     useEffect(() => {
         setUploading(true)
@@ -88,6 +110,11 @@ const FileUpload = () => {
             <Typography variant='h2' gutterBottom sx={{fontWeight: 'bold', textAlign: 'center', color: '#333'}}>
                 RESUME AS CODE
             </Typography>
+            <Button variant='outlined' sx={{mb: 2, fontSize: '0.9rem', textTransform: 'none'}}
+                onClick={handleDownloadExample}
+            >
+                Download File Example
+            </Button>
             <Typography variant='h6' gutterBottom sx={{textAlign: 'center', color: '#333'}}>
                 Upload a File
             </Typography>
