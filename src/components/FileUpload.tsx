@@ -38,7 +38,7 @@ const FileUpload = () => {
         formData.append("file", selectedFile);
         
         try {
-            const response = await fetch('http://localhost:8081/validate', {
+            const response = await fetch('api/validate/validate', {
                 method: "POST",
                 body: formData,
             });
@@ -50,7 +50,7 @@ const FileUpload = () => {
                 setUploading(!uploading);
 
                 
-                const generateResponse = await fetch('http://localhost:3000/generate', {
+                const generateResponse = await fetch('api/generate/generate', {
                     method: "POST",
                     body: formData,
                 });
